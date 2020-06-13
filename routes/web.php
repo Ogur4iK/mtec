@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+
+Route::namespace('Admin')->prefix('admin')->group(function () {
+    Route::get('/', 'AdminController@index');
+    Route::resource('/news', 'NewsController');
 });
+
