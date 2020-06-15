@@ -17,8 +17,11 @@ class CreateSpecialtiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('name');
-            $table->string('plan');
+            $table->string('qualification');
+            $table->string('img')->nullable();
+            $table->string('img_bg')->nullable();
             $table->integer('is_reception')->default(0);
+            $table->string('slug');
             $table->timestamps();
         });
     }

@@ -40,12 +40,13 @@ class NewsController extends Controller
         $this->validate($request, [
             'title' =>'required',
             'content'   =>  'required',
+            'description' => 'required',
             'img' =>  'nullable|image'
         ]);
 
         $news = News::add($request->all());
         $news->uploadImage($request->file('img'));
-        return redirect()->route('news.index')->with('success_add', 'Запись успешно добавлена');
+        return redirect()->route('news.index')->with('status', 'Запись успешно добавлена');
     }
 
 
@@ -73,12 +74,13 @@ class NewsController extends Controller
         $this->validate($request, [
             'title' =>'required',
             'content'   =>  'required',
+            'description' => 'required',
             'img' =>  'nullable|image'
         ]);
         $news = News::find($id);
         $news->edit($request->all());
         $news->uploadImage($request->file('img'));
-        return redirect()->route('news.index')->with('success_edit', 'Запись успешно отредактирована');
+        return redirect()->route('news.index')->with('status', 'Запись успешно отредактирована');
     }
 
     /**
@@ -90,6 +92,6 @@ class NewsController extends Controller
     public function destroy($id)
     {
         News::find($id)->remove();
-        return redirect()->route('news.index')->with('success_remove', 'Запись успешно удалена');
+        return redirect()->route('news.index')->with('status', 'Запись успешно удалена');
     }
 }

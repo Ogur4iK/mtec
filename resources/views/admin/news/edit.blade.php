@@ -31,6 +31,12 @@
                                         <textarea name="content" id="content" class="textarea">{{$news->content}}</textarea>
                                     </div>
                                     <div class="form-group">
+                                        <label for="description">Описание (отображается на странице "Новости")</label>
+                                        <textarea class="form-control" rows="5" name="description"
+                                                  placeholder="Введите краткое описание новости, отображаемое на странице новостей"
+                                        >{{$news->description}}</textarea>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="img">Лицевое изображение</label>
                                         <img src="{{$news->getImage()}}" class="d-block mb-2 img-responsive" width="300">
                                         <div class="input-group">

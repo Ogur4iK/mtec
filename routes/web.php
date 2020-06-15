@@ -11,10 +11,50 @@
 |
 */
 
-Auth::routes();
-
-Route::namespace('Admin')->prefix('admin')->group(function () {
-    Route::get('/', 'AdminController@index');
+Route::namespace('Admin')->prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/', 'NewsController@index');
     Route::resource('/news', 'NewsController');
+    Route::resource('/users', 'UsersController')->middleware('admin');
+    Route::resource('/specialties', 'SpecialtiesController');
+    Route::resource('/resources', 'ResourcesController');
+    Route::resource('/history', 'HistoryController');
+    Route::resource('/gallery', 'GalleryController');
+    Route::resource('/speciality-description', 'SpecialtiesDescriptionController');
+    Route::get('/speciality-description/{parent_id}/create/',
+        'SpecialtiesDescriptionController@create')->name('speciality-description.create');
+    Route::resource('/menu', 'MenuController');
+});
+
+Route::get('/logout', 'AuthController@logout')->name('logout');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', 'AuthController@loginForm')->name('login');
+    Route::post('/login', 'AuthController@login')->name('login');
+});
+
+Route::get('/', 'PagesController@home');
+
+Route::get('/news/{slug}', 'NewsController@show');
+Route::get('/news', 'NewsController@index');
+
+Route::get('/specialties/{slug}', 'SpecialtiesController@show');
+
+Route::get('/history', function (){
+    return view('pages.history', ['history' => App\History::all()]);
+});
+
+Route::get('/about', function (){
+    return view('pages.about', ['gallery' => App\Gallery::all()]);
+});
+
+Route::get('/abituriyentu', function (){
+   return view('pages.abitur', ['specialties' => App\Speciality::all()]);
+});
+
+Route::get('/contacts', function (){
+    return view('pages.contacts');
+});
+
+Route::get('/uchashchimsya', function (){
+    return view('pages.uchashchimsya');
 });
 

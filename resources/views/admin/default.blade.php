@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Панель администратора</title>
+    <title>Панель управления</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{asset('css/admin/fontawesome.min.css')}}">
@@ -18,6 +18,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- DataTables -->
     <link rel="stylesheet" href="{{asset('css/admin/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin/responsive.bootstrap4.min.css')}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('css/admin/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin/select2-bootstrap4.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('css/admin/adminlte.min.css')}}">
     <!-- summernote -->
@@ -49,7 +52,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
                 <div class="info p-1">
-                    <a class="d-block">Alexander Pierce</a>
+                    <a class="d-block">{{Auth::user()->name}}</a>
                 </div>
             </div>
 
@@ -57,7 +60,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('menu.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-ellipsis-h"></i>
                             <p>Меню</p>
                         </a>
@@ -68,78 +71,87 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <p>Новости</p>
                         </a>
                     </li>
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link">
+                    <li class="nav-item">
+                        <a href="{{route('specialties.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-brain"></i>
-                            <p>
-                                Специальности
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Специальности</p>
                         </a>
-                        <ul class="nav nav-treeview" style="display: block;">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Специальности</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Описание спец-тей</p>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>
-                                Страницы
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview" style="display: block;">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Главная</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>О колледже</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Абитуриенту</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Учащимся</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Контакты</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+{{--                    <li class="nav-item has-treeview">--}}
+{{--                        <a href="#" class="nav-link">--}}
+{{--                            <i class="nav-icon fas fa-file-alt"></i>--}}
+{{--                            <p>--}}
+{{--                                Страницы--}}
+{{--                                <i class="right fas fa-angle-left"></i>--}}
+{{--                            </p>--}}
+{{--                        </a>--}}
+{{--                        <ul class="nav nav-treeview">--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>Главная</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>О колледже</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>Абитуриенту</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>Учащимся</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>Контакты</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                    </li>--}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user-tie"></i>
-                            <p>Пользователи</p>
+                        <a href="{{route('resources.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-border-none"></i>
+                            <p>Внешние ресурсы</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('history.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p>История колледжа</p>
+                        </a>
+                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{route('history.index')}}" class="nav-link">--}}
+{{--                            <i class="nav-icon far fa-calendar-alt"></i>--}}
+{{--                            <p>Расписание</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+                    <li class="nav-item">
+                        <a href="{{route('gallery.index')}}" class="nav-link">
+                            <i class="nav-icon far fa-images"></i>
+                            <p>Галерея</p>
+                        </a>
+                    </li>
+                    @if(Auth::user()->isAdmin())
+                        <li class="nav-item">
+                            <a href="{{route('users.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie"></i>
+                                <p>Пользователи</p>
+                            </a>
+                        </li>
+                    @endif
+                    <li class="nav-item">
+                        <a href="{{route('logout')}}" class="nav-link">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
                             <p>Выход</p>
                         </a>
@@ -162,6 +174,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('js/admin/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('js/admin/bootstrap.bundle.min.js')}}"></script>
+<!-- Select2 -->
+<script src="{{asset('js/admin/select2.full.min.js')}}"></script>
 <!-- DataTables -->
 <script src="{{asset('js/admin/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('js/admin/dataTables.bootstrap4.min.js')}}"></script>

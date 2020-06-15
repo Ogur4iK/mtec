@@ -10,7 +10,13 @@ $(function () {
     });
 
     // Summernote
-    $('.textarea').summernote()
+    $('.textarea').summernote({
+        lang:"ru-RU",
+        height:300
+    });
+
+    //Select
+    $('.select2').select2();
 });
 
 $(document).ready(function () {

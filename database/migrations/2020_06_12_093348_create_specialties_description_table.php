@@ -17,11 +17,11 @@ class CreateSpecialtiesDescriptionTable extends Migration
             $table->bigIncrements('id');
             $table->string('form');
             $table->string('specialization')->nullable();
-            $table->string('qualification');
             $table->string('period');
             $table->string('short_period');
             $table->string('tests');
-            $table->integer('class');
+            $table->string('education');
+            $table->string('plan');
             $table->bigInteger('speciality_id')->unsigned();
             $table->foreign('speciality_id')->references('id')->on('specialties')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
