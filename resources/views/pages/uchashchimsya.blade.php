@@ -11,22 +11,26 @@
         <section class="sched">
             <h2 class="sched__title">Скорректированное Расписание</h2>
             <div class="sched__inner">
-                <div class="sched__item"><a class="sched__item-link" href="#"></a>
-                    <div class="sched__item-wrap">
-                        <svg class="sched__item-icon">
-                            <use xlink:href="#student"></use>
-                        </svg>
-                        <h3 class="sched__item-title">Расписание для 1-4 курсов в разрезе групп</h3>
+                @if($studentsScheduleExists)
+                    <div class="sched__item"><a class="sched__item-link" target="_blank" href="uploads/schedules/students_schedule.pdf"></a>
+                        <div class="sched__item-wrap">
+                            <svg class="sched__item-icon">
+                                <use xlink:href="#student"></use>
+                            </svg>
+                            <h3 class="sched__item-title">Расписание для 1-4 курсов в разрезе групп</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="sched__item"><a class="sched__item-link" href="#"></a>
-                    <div class="sched__item-wrap">
-                        <svg class="sched__item-icon">
-                            <use xlink:href="#teacher"></use>
-                        </svg>
-                        <h3 class="sched__item-title">Расписание для 1-4 курсов в разрезе преподавателей</h3>
+                @endif
+                @if($studentsScheduleExists)
+                    <div class="sched__item"><a class="sched__item-link" target="_blank" href="uploads/schedules/teachers_schedule.pdf"></a>
+                        <div class="sched__item-wrap">
+                            <svg class="sched__item-icon">
+                                <use xlink:href="#teacher"></use>
+                            </svg>
+                            <h3 class="sched__item-title">Расписание для 1-4 курсов в разрезе преподавателей</h3>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </section>
         <section class="abs">

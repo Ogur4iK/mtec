@@ -19,6 +19,9 @@ Route::namespace('Admin')->prefix('admin')->middleware('auth')->group(function (
     Route::resource('/resources', 'ResourcesController');
     Route::resource('/history', 'HistoryController');
     Route::resource('/gallery', 'GalleryController');
+    Route::get('/schedule', 'ScheduleController@index')->name('schedule.index');
+    Route::post('/schedule/students', 'ScheduleController@storeStudents')->name('schedule.storeStudents');
+    Route::post('/schedule/teachers', 'ScheduleController@storeTeachers')->name('schedule.storeTeachers');
     Route::resource('/speciality-description', 'SpecialtiesDescriptionController');
     Route::get('/speciality-description/{parent_id}/create/',
         'SpecialtiesDescriptionController@create')->name('speciality-description.create');
@@ -55,6 +58,11 @@ Route::get('/contacts', function (){
 });
 
 Route::get('/uchashchimsya', function (){
-    return view('pages.uchashchimsya');
+    $studentsScheduleExists = Storage::exists('uploads/schedules/students_schedule.pdf');
+    $teachersScheduleExists = Storage::exists('uploads/schedules/teachers_schedule.pdf');
+    return view('pages.uchashchimsya', [
+        'studentsScheduleExists' => $studentsScheduleExists,
+        'teachersScheduleExists' => $teachersScheduleExists
+    ]);
 });
 

@@ -130,12 +130,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <p>История колледжа</p>
                         </a>
                     </li>
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="{{route('history.index')}}" class="nav-link">--}}
-{{--                            <i class="nav-icon far fa-calendar-alt"></i>--}}
-{{--                            <p>Расписание</p>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
+                    <li class="nav-item">
+                        <a href="{{route('schedule.index')}}" class="nav-link">
+                            <i class="nav-icon far fa-calendar-alt"></i>
+                            <p>Расписание</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{route('gallery.index')}}" class="nav-link">
                             <i class="nav-icon far fa-images"></i>
