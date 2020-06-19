@@ -6,6 +6,7 @@ use App\Speciality;
 use App\SpecialityDescription;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SpecialtiesDescriptionController extends Controller
 {
@@ -28,30 +29,29 @@ class SpecialtiesDescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'education.required' => 'Образование является обязательным полем',
+            'form.required' => 'Фрорма обучения является обязательным полем',
+            'period.required' => 'Срок обучения является обязательным полем',
+            'short_period.required' => 'Срок обучения в сокращенном виде является обязательным полем',
+            'tests.required' => 'Вступительные испытания является обязательным полем',
+            'plan.required' => 'План приема является обязательным полем',
+            'speciality_id.required' => 'Пароль является обязательным полем'
+        ];
+        Validator::make($request->all(), [
+            'education' => 'required',
             'form' => 'required',
             'period' => 'required',
             'short_period' => 'required',
             'tests' => 'required',
-            'education' => 'required',
             'plan' => 'required',
             'speciality_id' => 'required'
-        ]);
+        ], $messages)->validate();
 
         SpecialityDescription::add($request->all());
         return redirect()->route('specialties.index')->with('status', 'Запись успешно добавлена');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -63,7 +63,8 @@ class SpecialtiesDescriptionController extends Controller
     {
         $speciality_desc = SpecialityDescription::find($id);
         $parent_name = Speciality::find($speciality_desc->speciality_id)->name;
-        return view('admin.specialties.description.edit', ['speciality_desc' => $speciality_desc, 'parent_name' => $parent_name]);
+        return view('admin.specialties.description.edit',
+            ['speciality_desc' => $speciality_desc, 'parent_name' => $parent_name]);
     }
 
     /**
@@ -75,14 +76,23 @@ class SpecialtiesDescriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $messages = [
+            'education.required' => 'Образование является обязательным полем',
+            'form.required' => 'Фрорма обучения является обязательным полем',
+            'period.required' => 'Срок обучения является обязательным полем',
+            'short_period.required' => 'Срок обучения в сокращенном виде является обязательным полем',
+            'tests.required' => 'Вступительные испытания является обязательным полем',
+            'plan.required' => 'План приема является обязательным полем',
+            'speciality_id.required' => 'Пароль является обязательным полем'
+        ];
+        Validator::make($request->all(), [
+            'education' => 'required',
             'form' => 'required',
             'period' => 'required',
             'short_period' => 'required',
             'tests' => 'required',
-            'education' => 'required',
             'plan' => 'required'
-        ]);
+        ], $messages)->validate();
 
         $speciality_desc = SpecialityDescription::find($id);
         $speciality_desc->edit($request->all());

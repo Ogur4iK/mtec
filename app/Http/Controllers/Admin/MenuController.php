@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class MenuController extends Controller
 {
@@ -38,9 +39,12 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'   =>  'required'
-        ]);
+        $messages = [
+            'name.required' => 'Заголовок меню является обязательным полем',
+        ];
+        Validator::make($request->all(), [
+            'name' =>'required'
+        ], $messages)->validate();
 
         Menu::add($request->all());
         return redirect()->route('menu.index')->with('status', 'Запись успешно добавлена');
@@ -79,9 +83,12 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name'   =>  'required'
-        ]);
+        $messages = [
+            'name.required' => 'Заголовок меню является обязательным полем',
+        ];
+        Validator::make($request->all(), [
+            'name' =>'required'
+        ], $messages)->validate();
 
         Menu::find($id)->edit($request->all());
         return redirect()->route('menu.index')->with('status', 'Запись успешно отредактирована');

@@ -18,9 +18,7 @@ class Gallery extends Model
                 $galley = new static;
                 $galley->uploadImage($image);
             }
-            return true;
         }
-        else return false;
     }
 
     public function uploadImage($img)

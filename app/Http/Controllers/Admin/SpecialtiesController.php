@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Speciality;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SpecialtiesController extends Controller
 {
@@ -37,12 +38,21 @@ class SpecialtiesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'code.required' => 'Код специальности является обязательным полем',
+            'qualification.required' => 'Квалификация является обязательным полем',
+            'name.required' => 'Наименование специальности является обязательным полем',
+            'img.required' => 'Изображение на главной является обязательным полем',
+            'img.image' => 'Изображение на главной должно быть формата: jpeg, png, jpg, gif, svg, bmp',
+            'img_bg.image' => 'Изображения в шапке должно быть формата: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
             'code' =>'required',
             'qualification' => 'required',
-            'img' => 'required',
+            'img' => 'required|image',
+            'img_bg' => 'image',
             'name'   =>  'required'
-        ]);
+        ], $messages)->validate();
 
         $speciality = Speciality::add($request->all());
         $speciality->toggleReception($request->get('is_reception'));
@@ -83,11 +93,21 @@ class SpecialtiesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $messages = [
+            'code.required' => 'Код специальности является обязательным полем',
+            'qualification.required' => 'Квалификация является обязательным полем',
+            'name.required' => 'Наименование специальности является обязательным полем',
+            'img.image' => 'Изображение на главной должно быть формата: jpeg, png, jpg, gif, svg, bmp',
+            'img_bg.image' => 'Изображения в шапке должно быть формата: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
             'code' =>'required',
             'qualification' => 'required',
+            'img' => 'image',
+            'img_bg' => 'image',
             'name'   =>  'required'
-        ]);
+        ], $messages)->validate();
+
         $speciality = Speciality::find($id);
         $speciality->edit($request->all());
         $speciality->toggleReception($request->get('is_reception'));

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Resource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ResourcesController extends Controller
 {
@@ -37,14 +38,20 @@ class ResourcesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'title.required' => 'Заголовок является обязательным полем',
+            'url.required' => 'Ссылка является обязательным полем',
+            'img.required' => 'Изображение является обязательным полем',
+            'img.image' => 'Изображение должно быть формата: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
             'title' =>'required',
             'url'   =>  'required',
-            'img' =>  'required'
-        ]);
+            'img' =>  'required|image'
+        ], $messages)->validate();
 
-        $news = Resource::add($request->all());
-        $news->uploadImage($request->file('img'));
+        $resource = Resource::add($request->all());
+        $resource->uploadImage($request->file('img'));
         return redirect()->route('resources.index')->with('status', 'Запись успешно добавлена');
     }
 
@@ -69,14 +76,20 @@ class ResourcesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $messages = [
+            'title.required' => 'Заголовок является обязательным полем',
+            'url.required' => 'Ссылка является обязательным полем',
+            'img.image' => 'Изображение должно быть формата: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
             'title' =>'required',
             'url'   =>  'required',
             'img' =>  'nullable|image'
-        ]);
-        $resources = Resource::find($id);
-        $resources->edit($request->all());
-        $resources->uploadImage($request->file('img'));
+        ], $messages)->validate();
+
+        $resource = Resource::find($id);
+        $resource->edit($request->all());
+        $resource->uploadImage($request->file('img'));
         return redirect()->route('resources.index')->with('status', 'Запись успешно отредактирована');
     }
 

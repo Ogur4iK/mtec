@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -15,10 +16,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'login.required' => 'Логин является обязательным полем',
+            'password.required' => 'Пароль является обязательным полем'
+        ];
+        Validator::make($request->all(), [
             'login'	=>	'required',
             'password'	=>	'required'
-        ]);
+        ], $messages)->validate();
 
         if(Auth::attempt([
             'login'	=>	$request->get('login'),

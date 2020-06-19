@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
@@ -38,11 +39,18 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'login.required' => 'Логин является обязательным полем',
+            'login.unique' => 'Логин должен быть уникальным',
+            'name.required' => 'ФИО является обязательным полем',
+            'password.required' => 'Пароль является обязательным полем',
+            'password.min' => 'Минимальная длина пароля 6 символов',
+        ];
+        Validator::make($request->all(), [
             'login' =>'required|unique:users',
             'name'   =>  'required',
             'password' =>  'required|min:6'
-        ]);
+        ], $messages)->validate();
 
         $user = User::add($request->all());
         $user->generatePassword($request->get('password'));
@@ -72,13 +80,21 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        $this->validate($request, [
+        $messages = [
+            'login.required' => 'Логин является обязательным полем',
+            'login.unique' => 'Логин должен быть уникальным',
+            'name.required' => 'ФИО является обязательным полем',
+            'password.min' => 'Минимальная длина пароля 6 символов',
+        ];
+        Validator::make($request->all(), [
             'login' => [
                 'required',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'name'   =>  'required'
-        ]);
+            'name'   =>  'required',
+            'password' =>  'min:6'
+        ], $messages)->validate();
+
         $user->edit($request->all());
         $user->generatePassword($request->get('password'));
         $user->toggleAdmin($request->get('role'));

@@ -37,13 +37,16 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        $isUploaded = Gallery::uploadImages($request->file('images'));
-        if ($isUploaded){
-            return redirect()->route('gallery.index')->with('status', 'Изображения успешно добавлены');
-        }
-        else{
-            return redirect()->route('gallery.create')->withErrors(array('message' => 'Выберите изображения для загрузки'));
-        }
+        $messages = [
+            'images.required' => 'Выберите изображения для загрузки',
+            'images.*.image' => 'Изображения должны быть форматов: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
+            'images' => 'required',
+            'images.*' => 'image'
+        ], $messages)->validate();
+        Gallery::uploadImages($request->file('images'));
+        return redirect()->route('gallery.index')->with('status', 'Изображения успешно добавлены');
     }
 
     /**

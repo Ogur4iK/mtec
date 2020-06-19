@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -37,12 +38,18 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'title.required' => 'Заголовок является обязательным полем',
+            'content.required' => 'Контент является обязательным полем',
+            'description.required' => 'Описание является обязательным полем',
+            'img.image' => 'Изображение должно быть формата: jpeg, png, jpg, gif, svg, bmp',
+        ];
+        Validator::make($request->all(), [
             'title' =>'required',
             'content'   =>  'required',
             'description' => 'required',
             'img' =>  'nullable|image'
-        ]);
+        ], $messages)->validate();
 
         $news = News::add($request->all());
         $news->uploadImage($request->file('img'));
@@ -71,12 +78,19 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $messages = [
+            'title.required' => 'Заголовок является обязательным полем',
+            'content.required' => 'Контент является обязательным полем',
+            'description.required' => 'Описание является обязательным полем',
+            'img.image' => 'Изображение должно быть формата: jpeg, png, jpg, gif, svg, bmp'
+        ];
+        Validator::make($request->all(), [
             'title' =>'required',
             'content'   =>  'required',
             'description' => 'required',
             'img' =>  'nullable|image'
-        ]);
+        ], $messages)->validate();
+
         $news = News::find($id);
         $news->edit($request->all());
         $news->uploadImage($request->file('img'));

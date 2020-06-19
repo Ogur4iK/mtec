@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\History;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class HistoryController extends Controller
 {
@@ -37,12 +38,15 @@ class HistoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $messages = [
+            'year.required' => 'Год является обязательным полем',
+            'description.required' => 'Описание является обязательным полем'
+        ];
+        Validator::make($request->all(), [
             'year' =>'required',
             'description' => 'required'
-        ]);
-
-        $news = History::add($request->all());
+        ], $messages)->validate();
+        History::add($request->all());
         return redirect()->route('history.index')->with('status', 'Запись успешно добавлена');
     }
 
@@ -67,10 +71,15 @@ class HistoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $messages = [
+            'year.required' => 'Год является обязательным полем',
+            'description.required' => 'Описание является обязательным полем'
+        ];
+        Validator::make($request->all(), [
             'year' =>'required',
             'description' => 'required'
-        ]);
+        ], $messages)->validate();
+
         $history = History::find($id);
         $history->edit($request->all());
         return redirect()->route('history.index')->with('status', 'Запись успешно отредактирована');
